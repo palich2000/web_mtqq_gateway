@@ -30,7 +30,7 @@ all:	daemon
 	
 
 #######################
-G_EX = $(shell git describe --tag 2> /dev/null ; if [ $$? -eq 0 ]; then echo "OK"; else echo "FAIL" ; fi)
+G_EX = $(shell git describe --tag >/dev/null ; if [ $$? -eq 0 ]; then echo "OK"; else echo "FAIL" ; fi)
 GVER = $(shell git describe --abbrev=7 --long 2>/dev/null)
 #######################
 
@@ -96,7 +96,7 @@ cleandaemon_debug: clean
 cleanall: clean
 
 clean:
-	rm -f $(DAEMON_DEPS) $(DAEMON_OBJS) $(DAEMON_TARGET) core* 
+	rm -f $(DAEMON_DEPS) $(DAEMON_OBJS) $(DAEMON_TARGET) core* version.c
 
 
 daemon_install: daemon

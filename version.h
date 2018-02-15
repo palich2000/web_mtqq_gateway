@@ -3,4 +3,3 @@
 extern const char * git_version;
 extern const char * git_branch;
 #endif /* VERSION_H_ */
-
