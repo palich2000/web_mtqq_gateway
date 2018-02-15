@@ -1,0 +1,18 @@
+[Unit]
+Description=web_mtqq_gateway service
+After=network.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/web_mtqq_gateway/web_mtqq_gateway.pid
+EnvironmentFile=/etc/sysconfig/web_mtqq_gateway
+#ExecStartPre=/bin/mkdir -p /var/run/web_mtqq_gateway
+ExecStart=/usr/sbin/web_mtqq_gateway $OPTIONS -z $USER
+ExecReload=/usr/sbin/web_mtqq_gateway $OPTIONS -z $USER -k reconfigure
+ExecStop=/usr/sbin/web_mtqq_gateway $OPTIONS -z $USER -k shutdown
+KillMode=process
+Restart=on-failure
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target
