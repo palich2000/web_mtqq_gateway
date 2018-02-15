@@ -68,8 +68,10 @@ void on_connect(struct mosquitto *m, void *udata, int res) {
         //t_client_info *info = (t_client_info *)udata;
         //mosquitto_subscribe(m, NULL, "home/+/weather/#", 0);
         //mosquitto_subscribe(m, NULL, "stat/+/POWER", 0);
+	daemon_log(LOG_INFO, "mqtt connected");
     } else {
-        daemon_log(LOG_ERR, "connection refused error");
+        daemon_log(LOG_ERR, "mqtt connection error: (%d) %s", res, mosquitto_strerror(res));
+	sleep(5);
     }
 }
 
@@ -132,6 +134,7 @@ void * mosq_thread_loop(void * p) {
             int res = mosquitto_connect (mosq, mqtt_host, mqtt_port, mqtt_keepalive);
             if (res) {
                 daemon_log(LOG_ERR, "Can't connect to Mosquitto server %s", mosquitto_strerror(res));
+		sleep(10);
             }
             break;
         }
@@ -168,7 +171,7 @@ void mosq_init(const char * progname) {
 
         mosquitto_username_pw_set (mosq, mqtt_username, mqtt_password);
 
-        daemon_log(LOG_INFO, "Try connect to Mosquitto server ");
+        daemon_log(LOG_INFO, "Try connect to Mosquitto server %s:%d ", mqtt_host, mqtt_port);
         int res = mosquitto_connect (mosq, mqtt_host, mqtt_port, mqtt_keepalive);
         if (res) {
             daemon_log(LOG_ERR, "Can't connect to Mosquitto server %s", mosquitto_strerror(res));
