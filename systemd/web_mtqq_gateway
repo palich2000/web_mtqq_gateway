@@ -1,3 +1,2 @@
-OPTIONS=""
-USER=""
+OPTIONS="-p 3000 --mqtt-user owntracks --mqtt-password zhopa --run-as-user mosquitto"
 
